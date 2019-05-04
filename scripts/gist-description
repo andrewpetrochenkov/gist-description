@@ -1,0 +1,23 @@
+#!/usr/bin/env bash
+{ set +x; } 2>/dev/null
+
+usage() {
+    echo "usage: $(basename $0) id [description]" 1>&2
+    [[ $1 == "-h" ]] || [[ $1 == "--help" ]]; exit
+}
+
+[[ $1 == "-h" ]] || [[ $1 == "--help" ]] && usage "$@"
+
+[[ $# == 0 ]] && usage
+[[ -z "$GITHUB_TOKEN" ]] && echo "ERROR: GITHUB_TOKEN unknown" 1>&2 && exit 1
+
+tmp_output="$(mktemp)" || exit
+url="https://api.github.com/gists/$1"; shift
+[[ $# == 0 ]] && {
+    http_code="$(curl -s -w '%{http_code}' -u "$GITHUB_TOKEN:x-oauth-basic" -o "$tmp_output" "$url")" || exit
+    [[ $http_code -ge 300 ]] && { echo "$PWD:" && cat "$tmp_output" ; exit 1; }
+    grep '  "description": "' "$tmp" | head -1 | rev | cut -c 3- | rev | cut -c 19- ; exit
+}
+data="{\"description\":\"${@//\"/\\\"}\"}"
+http_code="$(curl -s -w '%{http_code}' -X PATCH -d "$data" -u "$GITHUB_TOKEN:x-oauth-basic" -o "$tmp_output" "$url")" || exit
+[[ $http_code -ge 300 ]] && { echo "$PWD:" && cat "$tmp_output" ; exit 1; };:

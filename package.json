@@ -1,0 +1,13 @@
+{
+  "name": "gist-description",
+  "version": "2019.5.3",
+  "description": ":octocat: get/set gist description",
+  "keywords": [
+    "gist"
+  ],
+  "homepage": "https://github.com/looking-for-a-job/gist-description",
+  "license": "Unlicense",
+  "bin": {
+    "gist-description": "./scripts/gist-description"
+  }
+}
