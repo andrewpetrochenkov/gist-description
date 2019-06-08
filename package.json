@@ -1,7 +1,7 @@
 {
   "name": "gist-description",
-  "version": "2019.5.3",
-  "description": ":octocat: get/set gist description",
+  "version": "2019.5.8",
+  "description": "get/set gist description",
   "keywords": [
     "gist"
   ],
